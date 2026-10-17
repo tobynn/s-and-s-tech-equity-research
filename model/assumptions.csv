@@ -1,0 +1,9 @@
+driver,bear,base,bull,unit,status,rationale
+revenue_growth_y1,0.04,0.08,0.13,fraction,analyst scenario,2026H1 sales +8.0% YoY; avoid annualizing a half-year trend
+revenue_growth_y2_y5,0.04,0.08,0.12,fraction,analyst scenario,Legacy demand plus modest mix gains; EUV stays outside base
+terminal_growth,0.015,0.020,0.025,fraction,analyst scenario,Long-run nominal growth guardrail; keep below WACC
+WACC,0.110,0.100,0.095,fraction,analyst scenario,To be recalibrated using valuation vintage and capital structure
+normalized_tax,0.24,0.24,0.24,fraction,placeholder,Replace with normalized cash tax from DART
+EBIT_margin_y1_to_y5,0.175,0.195,0.210,fraction,analyst scenario,H1 inferred run-rate OPM about 19.5%; bear/bull allow utilization and mix changes
+normalized_ROIC,0.15,0.20,0.22,fraction,analyst scenario,Reinvestment identity input; replace with NOPAT / invested capital after extracting DART balance sheet
+EUV_incremental_revenue,0,0,0,KRW bn,base-case gate,Set only after customer approval and repeated shipment are disclosed
