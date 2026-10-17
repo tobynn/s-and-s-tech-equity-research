@@ -1,0 +1,6 @@
+source_id,title,publisher,url,publication_or_access_date,priority,model_use,caveat
+S01,2025 annual financial summary, S&S Tech IR,https://snstech.co.kr/ko/ir/financial,2026-10-17,Primary,2023-2025 revenue and operating/net income,Summary statements; use DART notes for detailed line items
+S02,Disclosure search,S&S Tech IR,https://snstech.co.kr/ko/ir/disclosure,2026-10-17,Primary,Disclosure chronology,Use original DART filings for extracted detail
+S03,Periodic filings search,DART,https://dart.fss.or.kr/navi/searchNavi.do?naviCode=A002&naviCrpCik=00411048,2026-10-17,Primary,2026 H1 and 2025 annual actuals,Portal query not a static filing snapshot
+S04,IR/press archive,S&S Tech,https://snstech.co.kr/ko/pr/news?cat=press,2026-10-17,Primary,Product and EUV test timeline,Testing is not commercial revenue
+S05,2026 H1 growth summary,WiseReport,https://comp.wisereport.co.kr/company/c1010001.aspx?cmp_cd=101490,2026-08-31,Secondary,YoY trend check only,Reconcile exact accounts to DART
