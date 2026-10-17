@@ -13,7 +13,7 @@
 
 ## 결과 상태
 
-이 저장소는 재현 가능한 **시나리오 프레임워크**입니다. 다운로드 시점의 주가, 희석주식수, 순현금, 반기보고서 세부 자본·현금흐름표를 한 번에 공식 원문 대조하지 못한 항목은 공란으로 유지합니다. 따라서 주당 적정가와 매수/매도 결론을 제시하지 않습니다. `model/run_valuation.py`를 실행하면 ROIC 기반 reinvestment identity를 적용한 EV 감도표가 생성됩니다. DART 세부 CAPEX·D&A·NWC 검증 전의 proxy이며 결과는 분석자 가정이지 회사 가이던스가 아닙니다.
+이 저장소는 재현 가능한 **초기 분석 프레임워크**입니다. 현재 생성값은 탐색용 EV proxy로, 투자판단용 적정가치가 아닙니다. 다운로드 시점의 주가, 희석주식수, 순현금, 반기보고서 세부 자본·현금흐름표를 한 번에 공식 원문 대조하지 못한 항목은 공란으로 유지합니다. 따라서 주당 적정가와 매수/매도 결론을 제시하지 않습니다. `model/run_valuation.py`를 실행하면 ROIC 기반 reinvestment identity를 적용한 EV 감도표가 생성됩니다. DART 세부 CAPEX·D&A·NWC 검증 전의 proxy이며 결과는 분석자 가정이지 회사 가이던스가 아닙니다.
 
 ## 저장소 안내
 
@@ -25,7 +25,7 @@
 | `data/actuals.csv` | 공시·IR 기준 실적 스냅샷과 상태 |
 | `sources/source_register.csv` | 원문 링크, 출처 우선순위, 확인 항목 |
 | `model/assumptions.csv` | bear/base/bull 가정과 근거 등급 |
-| `model/run_valuation.py` | 5년 ROIC 기반 DCF 시나리오 계산기 |
+| `model/run_valuation.py` | 5년 ROIC 기반 EV proxy 계산기 |
 | `report/INVESTMENT_MEMO.md` | 투자 가설, 반증조건, 다음 업데이트 |
 
 ## 실행
@@ -44,4 +44,3 @@ python model/run_valuation.py
 4. PER은 comparable set의 사업 중첩도, 마진, 성장, 규모를 함께 공개하고 배수의 출처와 관측일을 기록합니다.
 
 본 자료는 교육·연구 목적이며 투자 권유가 아닙니다.
-
