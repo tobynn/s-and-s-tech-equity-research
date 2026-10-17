@@ -25,7 +25,7 @@
 | `data/actuals.csv` | 공시·IR 기준 실적 스냅샷과 상태 |
 | `sources/source_register.csv` | 원문 링크, 출처 우선순위, 확인 항목 |
 | `model/assumptions.csv` | bear/base/bull 가정과 근거 등급 |
-| `model/run_valuation.py` | 5년 FCFF DCF 및 민감도 계산기 |
+| `model/run_valuation.py` | 5년 ROIC 기반 DCF 시나리오 계산기 |
 | `report/INVESTMENT_MEMO.md` | 투자 가설, 반증조건, 다음 업데이트 |
 
 ## 실행
@@ -44,3 +44,4 @@ python model/run_valuation.py
 4. PER은 comparable set의 사업 중첩도, 마진, 성장, 규모를 함께 공개하고 배수의 출처와 관측일을 기록합니다.
 
 본 자료는 교육·연구 목적이며 투자 권유가 아닙니다.
+
