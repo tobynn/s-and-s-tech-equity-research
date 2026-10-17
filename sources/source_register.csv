@@ -4,3 +4,7 @@ S02,Disclosure search,S&S Tech IR,https://snstech.co.kr/ko/ir/disclosure,2026-10
 S03,Periodic filings search,DART,https://dart.fss.or.kr/navi/searchNavi.do?naviCode=A002&naviCrpCik=00411048,2026-10-17,Primary,2026 H1 and 2025 annual actuals,Portal query not a static filing snapshot
 S04,IR/press archive,S&S Tech,https://snstech.co.kr/ko/pr/news?cat=press,2026-10-17,Primary,Product and EUV test timeline,Testing is not commercial revenue
 S05,2026 H1 growth summary,WiseReport,https://comp.wisereport.co.kr/company/c1010001.aspx?cmp_cd=101490,2026-08-31,Secondary,YoY trend check only,Reconcile exact accounts to DART
+S06,Information Technology Business (mask blanks),HOYA,https://www.hoya.com/ir/2026/en/review/it.html,2026-10-17,Primary,HOYA mask-blank product exposure and segment context,Global segment context only; no pure-play multiple
+S07,Photomask products and services,Photronics,https://www.photronics.com/products/,2026-10-17,Primary,Photronics value-chain position as photomask manufacturer,"Manufacturing-stage comparator, not blank-mask material peer"
+S08,Semiconductor photomask products,Tekscend Photomask,https://www.toppan-photomask.com/en/product/,2026-10-17,Primary,Former Toppan Photomask product scope,Photomask manufacturing differs from blank-mask supply
+S09,Semiconductor business and photomasks,DNP,https://www.global.dnp/en/biz/solution/semiconductors/,2026-10-17,Primary,DNP photomask product exposure,Diversified group; no stand-alone multiple implied
