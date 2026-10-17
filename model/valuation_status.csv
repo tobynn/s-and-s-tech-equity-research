@@ -1,4 +1,4 @@
 method,role,formula_or_basis,required_inputs,status
-DCF,Primary framework,EV=sum(PV(FCFF))+PV(TV); interim proxy FCFF=NOPAT*(1-g/ROIC),ROIC; audited CAPEX; D&A; ΔNWC; WACC vintage; net cash; diluted shares,scenario EV proxy only; no fair value conclusion
+DCF,EV sensitivity proxy (not a completed DCF),EV=sum(PV(FCFF))+PV(TV); interim proxy FCFF=NOPAT*(1-g/ROIC),ROIC; audited CAPEX; D&A; ΔNWC; WACC vintage; net cash; diluted shares,exploratory scenario only; analyst ROIC/WACC and audited FCFF/equity bridge inputs pending
 RIM,Cross-check,residual income=book equity+PV((ROE-CoE)*beginning equity)+terminal value,latest controlling equity; sustainable ROE; CoE; payout; diluted shares,blocked pending official balance sheet extraction
 PER,Sanity check,normalized EPS*comparable justified PER,normalized EPS; >=3 business-fit peers; same date/basis/period; net cash and share count,no numeric peer PER applied; no direct pure-play peer verified
