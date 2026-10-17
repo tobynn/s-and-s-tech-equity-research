@@ -1,0 +1,7 @@
+period,basis,revenue_bn_krw,operating_profit_bn_krw,net_income_bn_krw,revenue_yoy_pct,op_yoy_pct,ni_yoy_pct,source_id,status
+2023,consolidated,150.320,25.039,25.855,,,,S01,official IR summary
+2024,consolidated,176.014,29.479,30.314,17.1,17.7,17.2,S01,official IR summary
+2025,consolidated,243.733,50.390,58.093,38.5,70.9,91.6,S01,official IR summary
+2026H1,consolidated,,,,8.0,-0.8,20.9,S05,YoY only; retrieve exact six-month figures from DART filing
+2026Q1,consolidated,61.692,11.376,13.793,6.6,-4.2,15.8,S05,reported current period; news reproduction of filing
+2026Q2,consolidated,66.400,13.600,12.700,9.5,2.3,26.3,S05,preliminary filing figures reproduced by secondary source; verify DART
