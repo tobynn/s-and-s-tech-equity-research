@@ -1,0 +1,4 @@
+scenario,revenue_growth_y1,revenue_growth_y2_y5,ebit_margin,normalized_roic,wacc,terminal_growth,ev_proxy_krw_bn,status
+bear,0.04,0.04,0.175,0.15,0.11,0.015,323.2,ROIC reinvestment-identity DCF proxy; analyst ROIC and bridge inputs pending DART extraction
+base,0.08,0.08,0.195,0.2,0.1,0.02,480.7,ROIC reinvestment-identity DCF proxy; analyst ROIC and bridge inputs pending DART extraction
+bull,0.13,0.12,0.21,0.22,0.095,0.025,663.9,ROIC reinvestment-identity DCF proxy; analyst ROIC and bridge inputs pending DART extraction
