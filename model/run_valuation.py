@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
-"""Scenario DCF scaffold for S&S Tech. Outputs EV sensitivity, not share target."""
+"""Scenario EV proxy scaffold for S&S Tech. Outputs EV sensitivity, not share target."""
 from pathlib import Path
 import csv
 
 ROOT = Path(__file__).resolve().parent
 ACTUALS = ROOT.parent / "data" / "actuals.csv"
-OUT = ROOT / "dcf_sensitivity.csv"
+OUT = ROOT / "ev_sensitivity_proxy.csv"
 with ACTUALS.open(encoding="utf-8-sig") as f:
     rows = list(csv.DictReader(f))
 base = next(r for r in rows if r["period"] == "2025")
