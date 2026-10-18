@@ -1,0 +1,19 @@
+{
+  "model_version": "2026-10-18/research-v3",
+  "unchanged_base_values": true,
+  "reverse_price_reconstruction_tolerance_krw": 1e-06,
+  "reverse_price_cases_verified": 3,
+  "common_section_count": 14,
+  "readme_report_match": true,
+  "excel_python_checks": 89,
+  "formula_errors": 0,
+  "pdf_pages": 15,
+  "pdf_visual_review": "all pages reviewed",
+  "workbook_visual_review": "all ten worksheets reviewed",
+  "remaining_limitations": [
+    "market-calibrated CAPM inputs",
+    "same-date normalized peer EPS and observed multiples",
+    "exchange-certified reference price",
+    "account-level operating equity split"
+  ]
+}

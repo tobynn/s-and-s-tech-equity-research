@@ -4,6 +4,7 @@ All money is KRW billion, shares in millions, per-share money in KRW.
 """
 from pathlib import Path
 import json,csv,math,re,shutil
+from valuation_review import review, review_text
 ROOT=Path(__file__).resolve().parents[1]
 def mdtable(headers,rows):
  return '\n'.join(['| '+' | '.join(map(str,headers))+' |','| '+' | '.join(['---']*len(headers))+' |']+['| '+' | '.join(map(str,r))+' |' for r in rows])+'\n'
@@ -46,7 +47,7 @@ def calculate(p,case,wacc_override=None,g_override=None):
  bridge=dict(netcash_h1=nc0,h2_revenue=h2rev,h2_ebit=h2op,h2_nopat=h2nopat,h2_da=h2da,h2_capex=h2capex,h2_delta_nwc=h2dnwc,h2_fcff=h2fcff,h2_interest=h2interest,h2_ni=h2ni,h2_dividend=p['h2div'],h2_buyback=p['h2buyback'],capital=p['capital'],netcash_2026e=nc26,book_2026e=b26,shares_mn=shares)
  return dict(case=case,forecast=rows,rim_schedule=rim,bridge=bridge,pv_fcff=pvfcff,pv_tv=pvtv,ev=ev,terminal_fcff=terminal_fcff,dcf_equity=dcfeq,dcf_price=dcfeq*1000/shares,tv_share=pvtv/ev,rim_equity=rimeq,rim_price=rimeq*1000/shares,rim_pv_terminal=pvtri,rim_identity_error=rimeq-ddm,normalized_eps=normeps,per=per,per_price=perprice,terminal_pe=terminal_pe,per_payout=per_payout,terminal_payout=term_payout)
 def report(p,rs):
- b=rs['Base'];a=p['h1'];c=p['cases']['Base'];br=b['bridge'];rows=b['forecast'];s=p['sources'];links={x[0]:x[3] for x in s}
+ b=rs['Base'];a=p['h1'];c=p['cases']['Base'];br=b['bridge'];rows=b['forecast'];s=p['sources'];links={x[0]:x[3] for x in s}; diagnostic=review(p,b); extra=review_text(p,b,diagnostic,mdtable,num,pct,px)
  def cite(i):return f'[{i}]({links[i]})'
  t=[]
  def add(x):t.append(x.strip()+'\n')
@@ -57,10 +58,11 @@ def report(p,rs):
  add(mdtable(['방법','Bear','Base','Bull','계산의 역할'],[[n,px(rs['Bear'][k]),px(b[k]),px(rs['Bull'][k]),role] for n,k,role in [('DCF','dcf_price','중심 시나리오: 투자 이후 영업현금흐름'),('PER','per_price','정상화 EPS와 이론 배수의 교차검증'),('RIM','rim_price','장부자본과 초과 ROE의 지속성')]]))
  add(f'본 보고서의 중심 산출값은 **DCF Base {px(b["dcf_price"])}**, DCF 시나리오 범위는 **{px(rs["Bear"]["dcf_price"])}~{px(rs["Bull"]["dcf_price"])}**다. 모두 2026년 말 조건부 적정주가이며, 12개월 후 거래가격의 통계적 예측이나 증권사 컨센서스가 아니다. 각 시나리오의 확률은 추정하지 않았다. 전망의 매출·마진·투자 경로가 성립할 때의 값이다.')
  add(f'가격 비교에는 5개 기업 모두 **2026-10-16 NAVER 일별시세 참고 종가**를 사용했다. 이 기업의 참고가는 **{p["reference_price"]:,.0f}원**, DCF Base와의 차이는 **{pct(b["dcf_price"]/p["reference_price"]-1)}**다. 배당을 제외한 연말 시나리오 가격차이며 확률적 기대수익률이 아니다. KRX 공식 종가와의 대사는 완료되지 않았고, 일부 종목은 Yahoo의 같은 날짜 값과 다르다. 공급사 가격을 섞지 않았다. 시가총액·매수 등급은 제시하지 않는다. '+cite('PX01'))
- add('PER·RIM·DCF는 서로 다른 가정의 교차검증이므로 평균 목표가를 만들지 않는다. 소형기업의 시장가격이 기본 사업 가치와 다르면 미확인 신규 사업의 가치나 이익 지속성에 관한 추가 가정을 확인해야 한다. 해당 가격 차이만으로 시장가격이 틀렸다고 결론 내리지 않는다.')
+ add('세 방법은 할인율·성장·분배 가정을 공유한다. PER와 RIM은 독립적인 시장 증거로 세지 않으며 평균 목표가를 만들지 않는다. 소형기업의 시장가격이 기본 사업 가치와 다르면 미확인 신규 사업의 가치나 이익 지속성에 관한 추가 가정을 확인해야 한다. 해당 가격 차이만으로 시장가격이 틀렸다고 결론 내리지 않는다.')
  add(f'핵심 반증은 {p["risks"][0][1]}이다. 다음 실적에서는 이 조건과 현금 회수를 먼저 확인한다. 핵심 실적의 원자료는 {cite("S01")}에서 확인할 수 있다.')
+ add(f'**[이번 점검의 판단]** 장기 초과 ROIC를 0으로 둔 DCF는 {px(diagnostic["dcf_no_excess_roic_price"])}다. 순현금의 낮은 수익률을 분리한 RIM 민감도는 {px(diagnostic["rim_cash_split_price"])}로 기존 RIM과 차이가 난다. 기존 Base의 산식과 숫자는 보존하고, 이 차이를 조건부 가치의 핵심 한계로 명시했다. 같은 이론 PER를 고정해 참고가격을 설명하려면 정상 영업이익률 {pct(diagnostic["required_per_normal_margin"])}가 필요하다. 이는 신규 전망이나 관측 시장 프리미엄이 아니다. 자세한 전환 가정과 기업별 수치 점검은 09·11절을 따른다.')
  add('## [02. 평가기준일·자료기준일·가정 버전]')
- add(mdtable(['항목','이번 보고서 기준','처리 방식'],[['발간·모델 버전','2026-10-18 / research-v2','보고서·CSV·Excel·PDF 동일 입력'],['정보 확인일','2026-10-18','원자료 발표일과 분리'],['재무상태 기준일','2026-06-30A','실제 현금·부채·지배주주 자본'],['평가 대상 시점','2026-12-31E','하반기 이익·투자·배당을 연결'],['명시 전망','2026E 및 2027E~2031E','2026년은 실제 H1과 추정 H2'],['잔존가치 시작','2032년','정상 성장·ROIC·ROE 적용'],['참고 종가','2026-10-16 / NAVER 일별시세','공급사별 차이 기록; 거래소 확정값 미대사'],['정량 peer 배수','미사용','동일 시점 정상 EPS·가격 확보 전 미산정']]))
+ add(mdtable(['항목','이번 보고서 기준','처리 방식'],[['발간·모델 버전','2026-10-18 / research-v3','보고서·CSV·Excel·PDF 동일 입력'],['정보 확인일','2026-10-18','원자료 발표일과 분리'],['재무상태 기준일','2026-06-30A','실제 현금·부채·지배주주 자본'],['평가 대상 시점','2026-12-31E','하반기 이익·투자·배당을 연결'],['명시 전망','2026E 및 2027E~2031E','2026년은 실제 H1과 추정 H2'],['잔존가치 시작','2032년','정상 성장·ROIC·ROE 적용'],['참고 종가','2026-10-16 / NAVER 일별시세','공급사별 차이 기록; 거래소 확정값 미대사'],['정량 peer 배수','미사용','동일 시점 정상 EPS·가격 확보 전 미산정']]))
  add('Valuation vintage라는 표현은 평가에 쓴 정보 묶음과 추정치의 버전을 뜻할 때 사용한다. 독자에게는 평가기준일·자료기준일·가정 버전으로 적는 편이 명확하다. 기술 상업화 단계, 프리미엄, 할인율은 각각 별도 개념이다. 이번 문서의 발간일을 과거 자료의 발표일로 바꾸지 않는다.')
  add('2026년 말 적정주가는 현 시점 가치와 날짜가 다르다. 6월 말 자본에 하반기 전체 이익을 더하는 계산은 연말 평가를 위한 것이다. 연말 현금에 2026년 전체 FCFF를 다시 더하지 않으며, 연말 DCF에는 2027년 이후 현금흐름만 할인한다. 실제 연말 공시 전까지 현금·자본 연결표의 하반기 부분은 분석자 추정이다.')
  add('## [03. 산업 분석과 이익이 결정되는 과정]')
@@ -86,6 +88,7 @@ def report(p,rs):
  add(mdtable(['십억원','2026E','2027E','2028E','2029E','2030E','2031E'],[[label]+[pct(r[key]) if key=='op_margin' else num(r[key]) for r in rows] for label,key in [('매출','revenue'),('영업이익률','op_margin'),('영업이익','ebit'),('지배주주 순이익','ni'),('EPS(원)','eps'),('D&A','da'),('CAPEX','capex'),('핵심 NWC','nwc')]]))
  add(f'정상 세율 {pct(p["tax"])}와 순현금 세후 수익률 {pct(p["interest"])}는 분석자 가정이다. 현재 세법에서 확정된 세율이나 회사 가이던스로 표시하지 않는다. 해외 법인·세액공제·이연법인세·환율 때문에 보고 세율과 다를 수 있다. 2026년 순이익은 H1 실제 지배주주 순이익에 H2의 세후 영업이익과 정상 이자수익을 더한다. 이후 순이익은 세후 영업이익의 지배주주 귀속 추정분과 순현금 수익으로 만든다. 금융상품 평가손익·OCI는 0으로 가정한다. 미래 지배주주 귀속 비율은 반기 지배주주 순이익/반기 전체 순이익으로 추정하되, 비지배지분 손실로 비율이 100%를 넘으면 100%로 제한했다. 미래 자회사별 수익성이 달라질 수 있어 이 비율은 회사 확정치가 아니다.')
  add('매출 전망은 관찰 가능한 실적과 사업 조건을 반영한 집계 경로다. 고객별 계약물량, 정확한 제품별 ASP·수율이 모두 공개된 수량 기반 예산은 아니다. 해당 미공개 수치를 임의로 만들어 정밀한 물량 모델로 포장하지 않았다. 가정별 근거와 실제 확인 조건을 다음 시나리오 표에 남겼다.')
+ add(extra['evidence'])
  add('## [07. 비교기업 선정과 프리미엄·할인 근거]')
  add(mdtable(['비교기업','역할','선정 이유','중요한 차이','정량 사용 판정'],p['peers']))
  if p['ticker']=='003230':add('농심과 오리온의 공식 실적·사업 자료를 통해 제품과 해외 사업 범위를 확인했다. '+cite('P01')+' '+cite('P02'))
@@ -109,6 +112,7 @@ def report(p,rs):
  add(mdtable(['연도','기초 자본','순이익','ROE','자본비용','RI','RI 현재가치'],[[r['year'],num(r['begin_book']),num(r['ni']),pct(r['roe']),num(r['charge']),num(r['ri']),num(r['pv_ri'])] for r in b['rim_schedule']]))
  add(f'성숙기 ROE {pct(c["roe"])}와 자기자본비용 {pct(c["ke"])}를 사용한다. 2032년 RI는 **(성숙 ROE - 자기자본비용) × 2031년 말 자본**이다. 2031년 말 자본은 이미 2032년 기초 자본이므로 여기에 성장률을 한 번 더 곱하지 않는다. 이후 RI가 장기 성장률 {pct(c["g"])}로 증가한다고 두어 (자기자본비용-g)로 자본화한다. Base RIM 주당가치는 **{px(b["rim_price"])}**다.')
  add(f'같은 이익·배당·청산가치 경로를 배당할인식으로 계산한 값과의 차이는 {b["rim_identity_error"]:.8f}십억원이다. 이 일치 여부는 clean-surplus 계산과 기간 연결을 점검하는 검증이다. 경제적 가정이 맞다는 검증은 아니다. 성숙 ROE가 자본비용과 같아지면 terminal RI는 0이 된다.')
+ add(extra['terminal'])
  add('## [10. DCF: 매출에서 자유현금흐름까지]')
  add('FCFF = EBIT × (1-정상 세율) + 감가상각·상각 - CAPEX - 핵심 운전자본 증가. NWC는 매출채권+재고-매입채무로 정의한다. 다른 영업성 자산·부채와 선수금·성과급·세금 납부 시차는 별도 추정하지 않아 실제 현금흐름과 차이가 날 수 있다. CAPEX 전망에는 공정 유지·증설·무형 및 신규 리스 대체투자에 필요한 총투자 가정을 포함한다. 미래 신규 리스 투자 누락은 DCF를 높일 수 있어 투자 민감도에서 확인한다.')
  add(mdtable(['십억원','2027E','2028E','2029E','2030E','2031E'],[[label]+[num(r[key]) for r in rows[1:]] for label,key in [('EBIT','ebit'),('NOPAT','nopat'),('D&A','da'),('CAPEX','capex'),('NWC 증가','delta_nwc'),('FCFF','fcff')]]))
@@ -125,13 +129,15 @@ def report(p,rs):
   add(mdtable(['비영업 금융자산 인정률','0%','50%','100%'],[['DCF 주당가치']+[px((b['dcf_equity']-a['nonop']+a['nonop']*q)*1000/br['shares_mn']) for q in [0,.5,1]]]))
   add('인정률 표는 매각 확률이 아니다. 자산 실현 가능성·가격 하락·세금에 대한 별도 가격 민감도다. PER은 정상 수익만 평가하고 비영업 자산을 별도 가산하지 않으므로 DCF와 차이가 난다.')
  add('DCF와 RIM의 차이는 영업 재투자·회계자본·금융자산의 범위 및 terminal 수익률 가정에서 발생한다. PER의 정상 마진과 분배 가능한 성장 경로도 DCF 집계 이익 경로와 다르다. 차이가 크다는 이유로 중간값을 목표가로 택하지 않는다. 본 표는 가정의 차이를 드러내는 용도다.')
+ add(extra['reverse'])
+ add(extra['special'])
  add('## [12. 투자위험과 다음 확인 자료]')
  add(mdtable(['위험','관찰할 악화 조건','변경 입력','갱신 모델'],p['risks']))
  add('다음 정기 공시에서 확인할 순서는 실제 손익, 지배주주 자본과 주식수, 현금흐름·CAPEX·운전자본, 제품·고객 관련 설명이다. 실적이 바뀌면 Forecast를 먼저 바꾸고 같은 이익을 PER·RIM·DCF로 전달한다. 가격 데이터만 바뀌면 상승여력과 시장 PER만 갱신하며 기업 실적 전망을 자동으로 바꾸지 않는다.')
  add('보고서의 약한 근거를 숫자 자릿수로 보완하지 않는다. 고객별 비공개 수익성, 시장 CAPM 입력, 동일 날짜 forward peer 자료, 실제 연말 환율·자본거래는 현재 추정의 한계다. 이런 항목은 공개 사실과 분리해 입력 파일에 남긴다. 신규 공시가 나오면 과거 판단을 보존한 채 입력 버전을 추가한다.')
  add('## [13. 계산 재현과 검증 기록]')
- add('단일 입력은 `data/research_inputs.json`이다. `python scripts/rebuild_research.py`로 실적·전망·현금/자본 연결표·RIM·결과 CSV와 본문을 다시 만든다. `model/Equity_Research_Model.xlsx`에는 동일 입력에서 만든 편집 가능한 수식이 들어 있다. 엑셀 생성 스크립트는 `scripts/build_model.mjs`이며 artifact-tool이 설치된 환경에서 실행한다. PDF는 `scripts/build_report_pdf.py`로 본문에서 재생성한다. 이전 파일은 `archive/`로 이동하고 현재 결과의 근거로 사용하지 않는다.')
- add(mdtable(['검증','수행 내용'],[['출처 1차 점검','반기 원문 계정·단위·귀속·주식수 대사'],['출처 2차 점검','요약표와 재무제표 및 주석 교차 확인'],['기간 검증','H1 실제 + H2 추정 = 2026E; DCF는 2027년부터'],['자본 검증','지배주주 자본의 clean-surplus 연결'],['모델 검증','Python 독립 계산과 Excel 결과 대조'],['RIM 검증','동일 배당 경로 DDM과의 항등식 확인'],['민감도 검증','WACC 상승 시 DCF 하락과 시나리오 결과 비교'],['문서 검증','5개 동일 목차·표·모델 결과·PDF 렌더 확인']]))
+ add('단일 입력은 `data/research_inputs.json`이다. `python scripts/rebuild_research.py`로 실적·전망·현금/자본 연결표·RIM·결과 CSV와 본문을 다시 만든다. `model/Equity_Research_Model.xlsx`에는 동일 입력에서 만든 편집 가능한 수식이 들어 있다. 엑셀 생성 스크립트는 `scripts/build_model.mjs`이며 artifact-tool이 설치된 환경에서 실행한다. PDF는 `scripts/build_report_pdf.py`로 본문에서 재생성한다. `scripts/valuation_review.py`가 장기 수익률·현금 분리·가격 역산·기업별 민감도를 계산하고 `model/valuation_review.json`과 CSV로 남긴다. Excel의 Diagnostics·Special Cases는 같은 계산을 수식으로 재현한다. 이전 파일은 `archive/`와 Git 커밋 이력에 보존하며 현재 결과의 근거로 사용하지 않는다.')
+ add(mdtable(['검증','수행 내용'],[['출처 1차 점검','반기 원문 계정·단위·귀속·주식수 대사'],['출처 2차 점검','요약표와 재무제표 및 주석 교차 확인'],['기간 검증','H1 실제 + H2 추정 = 2026E; DCF는 2027년부터'],['자본 검증','지배주주 자본의 clean-surplus 연결'],['모델 검증','Python 독립 계산과 Excel 결과 대조'],['RIM 검증','동일 배당 경로 DDM과의 항등식 확인'],['민감도 검증','WACC 상승 시 DCF 하락과 시나리오 결과 비교'],['경제적 가정 검증','장기 재투자 전환·현금 분리·가격 역산·기업별 자본거래 민감도'],['문서 검증','5개 동일 목차·표·모델 결과·PDF 렌더 확인']]))
  add('이 검증은 산식·입력 전사·문서 일치를 확인하는 작업이다. 공개되지 않은 회사 내부 예산이나 투자 결과를 확정하지 않는다. 참고 종가는 NAVER 일별시세로 통일했으며 공급사 차이는 `data/price_crosscheck.csv`에 남겼다. KRX 공식 종가 검증으로 표시하지 않는다.')
  add('### [2026H1에서 2026년 말로 이어지는 계산표]')
  add(mdtable(['하반기·연말 항목','Base 십억원'],[[label,num(br[key])] for label,key in [('H2 매출','h2_revenue'),('H2 EBIT','h2_ebit'),('H2 NOPAT','h2_nopat'),('H2 D&A','h2_da'),('H2 CAPEX','h2_capex'),('H2 NWC 증가','h2_delta_nwc'),('H2 FCFF','h2_fcff'),('H2 정상 이자수익','h2_interest'),('H2 지배주주 순이익','h2_ni'),('H2 배당','h2_dividend'),('H2 자사주 매입','h2_buyback'),('신규 납입 자금','capital'),('연말 순현금','netcash_2026e'),('연말 지배주주 자본','book_2026e')]]))
@@ -152,14 +158,20 @@ def main():
   assert abs(r['rim_identity_error'])<1e-5
   assert r['bridge']['h2_revenue']>=0 and r['bridge']['h2_capex']>=0 and r['bridge']['h2_da']>=0
   for v in ['dcf_price','rim_price','per_price']:assert math.isfinite(r[v])
+ diagnostics={k:review(p,v) for k,v in rs.items()}
  b=rs['Base'];assert calculate(p,'Base',p['cases']['Base']['wacc']+.01)['dcf_price']<b['dcf_price']
  (ROOT/'model').mkdir(exist_ok=True);(ROOT/'report').mkdir(exist_ok=True)
  (ROOT/'model/research_results.json').write_text(json.dumps(rs,ensure_ascii=False,indent=2)+'\n')
  csvout(ROOT/'model/forecast.csv',[dict(case=k,**r) for k,v in rs.items() for r in v['forecast']])
  csvout(ROOT/'model/rim_schedule.csv',[dict(case=k,**r) for k,v in rs.items() for r in v['rim_schedule']])
  csvout(ROOT/'model/cash_equity_bridge.csv',[dict(case=k,**v['bridge']) for k,v in rs.items()])
- csvout(ROOT/'model/valuation_results.csv',[dict(case=k,dcf_price=v['dcf_price'],rim_price=v['rim_price'],per_price=v['per_price'],per=v['per'],normalized_eps=v['normalized_eps'],valuation_date='2026-12-31E',model_version='2026-10-18') for k,v in rs.items()])
+ csvout(ROOT/'model/valuation_results.csv',[dict(case=k,dcf_price=v['dcf_price'],rim_price=v['rim_price'],per_price=v['per_price'],per=v['per'],normalized_eps=v['normalized_eps'],valuation_date='2026-12-31E',model_version=p['model_version']) for k,v in rs.items()])
+ (ROOT/'model/valuation_review.json').write_text(json.dumps(diagnostics,ensure_ascii=False,indent=2)+'\n')
+ csvout(ROOT/'model/valuation_review.csv',[dict(case=k,metric=key,value=value) for k,z in diagnostics.items() for key,value in z.items()])
  (ROOT/'report/FINAL_REPORT.md').write_text(report(p,rs))
+ readme=ROOT/'README.md'
+ if readme.exists() and '\n---\n' in readme.read_text():
+  prefix=readme.read_text().split('\n---\n',1)[0];readme.write_text(prefix+'\n---\n\n'+report(p,rs))
  csvout(ROOT/'data/actuals_verified.csv',[dict(period=h[0],revenue_bn=h[1],operating_profit_bn=h[2],net_income_bn=h[3],basis='standalone' if p['ticker']=='064760' else 'consolidated',source_id=actual_source(p,h[0])) for h in p['hist']])
  csvout(ROOT/'data/source_register.csv',[dict(source_id=x[0],title=x[1],publisher=x[2],url=x[3],accessed='2026-10-18',use=x[4]) for x in p['sources']])
  print(p['name'],{k:round(b[k]) for k in ['dcf_price','rim_price','per_price']},'report chars',len(report(p,rs)))

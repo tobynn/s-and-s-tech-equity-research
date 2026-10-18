@@ -383,5 +383,54 @@
   ],
   "reference_price": 43250,
   "reference_price_date": "2026-10-16",
-  "yahoo_price_crosscheck": null
+  "yahoo_price_crosscheck": null,
+  "model_version": "2026-10-18/research-v3",
+  "review_inputs": {
+    "margin_drop": 0.02,
+    "extra_capex": 0.2,
+    "eb_carrying_amount": 13.867513194,
+    "eb_exchange_shares_mn": 0.244504,
+    "euv_fcf_margins": [
+      0.2,
+      0.3
+    ]
+  },
+  "evidence_review": [
+    [
+      "기존 블랭크 성장",
+      "공식 재무자료 S04와 DART S01",
+      "2027 매출 +8%, 마진 19.5%는 기존 사업 시나리오",
+      "출하·제품 구성·감가비 확인; 고부가 믹스 수치 미공개"
+    ],
+    [
+      "EUV 상업화",
+      "회사 재게시 기사 S05; 고객 테스트 관련 보도",
+      "모든 기본 사업 시나리오에서 신규 EUV 증분 매출 0",
+      "고객 양산 승인·유상 출하·수율 공개 후 별도 추가"
+    ],
+    [
+      "영업세율 정상화",
+      "2025 순이익이 세전이익 초과; 세금효과 DART",
+      "정상 세율 24%는 분석자 가정",
+      "이연법인세·공제의 반복 여부 확인"
+    ],
+    [
+      "교환사채와 경제적 주식수",
+      "DART 반기 주석 S02·자기주식 S03",
+      "미교환 기본값; 부채와 244,504주를 동시 조정",
+      "실제 후속 교환·가격조정·부채 재측정 확인"
+    ],
+    [
+      "HOYA·Photronics 비교",
+      "HOYA IT S06 / Photronics 제품 S07",
+      "블랭크와 완성 마스크 단계 구분; 정량 배수 미사용",
+      "사업별 이익·정상 EPS 확보; 전사 PER의 직접 적용 제한"
+    ],
+    [
+      "장기 수익률",
+      "EUV 양산 수익률 자료 부재",
+      "성숙 ROIC 13%, ROE 12%는 기존 사업 조건",
+      "신규사업 성공을 terminal과 EPS에 중복 반영 금지"
+    ]
+  ]
 }
