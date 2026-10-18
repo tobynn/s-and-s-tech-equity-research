@@ -1,3 +1,5 @@
+> **이전 버전 참고 자료**: 2026-10-18 통합 보고서가 현재 기준입니다. 아래의 과거 숫자는 현재 목표가로 사용하지 않습니다. [현재 보고서](../report/FINAL_REPORT.md) · [이전 원본](../archive/pre-v2/research/VALUATION_POLICY.md)
+
 # Valuation policy & vintage
 
 ## Vintage

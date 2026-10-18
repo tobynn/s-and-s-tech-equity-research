@@ -1,0 +1,62 @@
+{
+  "company": "에스앤에스텍",
+  "version": "2026-10-18",
+  "scenario_checks": [
+    {
+      "case": "Bear",
+      "metric": "dcf_price",
+      "excel": 15670.136778773285,
+      "python": 15670.13677877328
+    },
+    {
+      "case": "Bear",
+      "metric": "per_price",
+      "excel": 14019.040732975496,
+      "python": 14019.040732975496
+    },
+    {
+      "case": "Bear",
+      "metric": "rim_price",
+      "excel": 12504.883819024888,
+      "python": 12504.88381902489
+    },
+    {
+      "case": "Base",
+      "metric": "dcf_price",
+      "excel": 26105.995540067102,
+      "python": 26105.995540067102
+    },
+    {
+      "case": "Base",
+      "metric": "per_price",
+      "excel": 20359.078302587986,
+      "python": 20359.078302587986
+    },
+    {
+      "case": "Base",
+      "metric": "rim_price",
+      "excel": 19438.846622902478,
+      "python": 19438.846622902478
+    },
+    {
+      "case": "Bull",
+      "metric": "dcf_price",
+      "excel": 33469.17652590594,
+      "python": 33469.17652590594
+    },
+    {
+      "case": "Bull",
+      "metric": "per_price",
+      "excel": 27641.435586015232,
+      "python": 27641.435586015232
+    },
+    {
+      "case": "Bull",
+      "metric": "rim_price",
+      "excel": 27028.20604168673,
+      "python": 27028.20604168673
+    }
+  ],
+  "formula_errors": 0,
+  "rim_ddm_error": 2.2737367544323206e-13
+}

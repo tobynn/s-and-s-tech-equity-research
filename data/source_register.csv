@@ -1,0 +1,11 @@
+﻿source_id,title,publisher,url,accessed,use
+S01,2026 반기 연결재무제표,DART,https://dart.fss.or.kr/report/viewer.do?rcpNo=20260813000645&dcmNo=11523270&eleId=19&offset=230355&length=192636&dtd=dart4.xsd,2026-10-18,연결 손익·현금·자본
+S02,2026 반기 연결재무제표 주석,DART,https://dart.fss.or.kr/report/viewer.do?rcpNo=20260813000645&dcmNo=11523270&eleId=24&offset=422995&length=1582160&dtd=dart4.xsd,2026-10-18,세금·금융자산·투자·교환사채
+S03,2026 반기 주식의 총수,DART,https://dart.fss.or.kr/report/viewer.do?rcpNo=20260813000645&dcmNo=11523270&eleId=7&offset=69445&length=66931&dtd=dart4.xsd,2026-10-18,"유통주식 21,075,750; EB 대상 244,504"
+S04,2023~2025 재무정보,에스앤에스텍,https://snstech.co.kr/ko/ir/financial,2026-10-18,연간 연결 요약
+S05,EUV 테스트 관련 기사 보관,에스앤에스텍,https://snstech.co.kr/ko/pr/news?cat=press,2026-10-18,회사 홈페이지 재게시 기사; 상업 승인 공시 아님
+S06,블랭크마스크 사업,HOYA,https://www.hoya.com/ir/2026/en/review/it.html,2026-10-18,제품 비교; 연결 배수 직접 적용 제외
+S07,포토마스크 제품,Photronics,https://www.photronics.com/products/,2026-10-18,공급망 단계 비교
+M01,PER의 성장·ROE·배당·위험 관계,"NYU Stern, Aswath Damodaran",https://pages.stern.nyu.edu/~adamodar/New_Home_Page/invfables/peratio.htm,2026-10-18,방법론; 시장 관측 배수의 출처가 아님
+M02,성숙기 재투자와 잔존가치,"NYU Stern, Aswath Damodaran",https://pages.stern.nyu.edu/~adamodar/New_Home_Page/valquestions/termvalueexreturns.htm,2026-10-18,방법론; 개별기업 가정은 분석자 판단
+PX01,2026-10-16 일별시세 참고 종가,NAVER Finance,https://api.finance.naver.com/siseJson.naver?symbol=101490&requestType=1&startTime=20261016&endTime=20261016&timeframe=day,2026-10-18,"단일 공급사 기준; Yahoo와 일부 불일치, KRX 공식종가 미대사"
